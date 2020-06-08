@@ -39,22 +39,18 @@
       FROM node:12-alpine3.10  as build-stage
       WORKDIR /app
       COPY package*.json ./
-      #  指定 Npm  地址， 需要切换为 公司私有Npm 厂库
-      RUN npm config set registry http://registry.npm.taobao.org/
+      RUN npm config set registry http://mvn.zjs.com.cn/nexus/content/groups/npm-all/
       RUN npm install
       # 拷贝 当前目录下所有文件到 容器 /app目录下
       COPY . .
-      # 运行的构建命令  
+      # 运行的构建命令
       RUN npm run build
-      
       # production stage
       FROM nginx:latest as production-stage
       # 设置时区为上海
       RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-      # 文件路径 设置正确地址    /app 为根路径 
+      # 文件路径 设置正确地址    /app 为根路径
       COPY --from=build-stage /app/dist /usr/share/nginx/html
-      
-      
       EXPOSE 80
       CMD ["nginx", "-g", "daemon off;"]
       
