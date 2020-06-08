@@ -9,12 +9,12 @@
 FROM node:12-alpine3.10  as build-stage
 WORKDIR /app
 COPY package*.json ./
-RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
-RUN cnpm install
+RUN npm config set registry http://registry.npm.taobao.org/
+RUN npm install
 # 拷贝 当前目录下所有文件到 容器 /app目录下
 COPY . .
 # 运行的构建命令  
-RUN cnpm run build
+RUN npm run build
 # production stage
 FROM nginx:latest as production-stage
 # 设置时区为上海
