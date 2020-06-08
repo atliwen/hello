@@ -14,7 +14,7 @@ RUN cnpm install
 # 拷贝 当前目录下所有文件到 容器 /app目录下
 COPY . .
 # 运行的构建命令  
-RUN npm run build
+RUN cnpm run build
 # production stage
 FROM nginx:latest as production-stage
 # 设置时区为上海
